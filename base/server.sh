@@ -73,36 +73,6 @@ should_add_server_configs() {
   fi
 }
 
-should_disable_bots() {
-  cd $csgo_dir
-
-  if [ "${CSGO_DISABLE_BOTS-"false"}" = "true" ]; then
-    if [ -f "botchatter.db" ]; then
-      mv "botchatter.db" "botchatter.disabled.db"
-    fi
-
-    if [ -f "botprofilecoop.db" ]; then
-      mv "botprofilecoop.db" "botprofilecoop.disabled.db"
-    fi
-
-    if [ -f "botprofile.db" ]; then
-      mv "botprofile.db" "botprofile.disabled.db"
-    fi
-  else
-    if [ -f "botchatter.disabled.db" ]; then
-      mv "botchatter.disabled.db" "botchatter.db"
-    fi
-
-    if [ -f "botprofilecoop.disabled.db" ]; then
-      mv "botprofilecoop.disabled.db" "botprofilecoop.db"
-    fi
-
-    if [ -f "botprofile.disabled.db" ]; then
-      mv "botprofile.disabled.db" "botprofile.db"
-    fi
-  fi
-}
-
 start() {
   echo '> Starting server ...'
 
@@ -224,7 +194,6 @@ if [ ! -z $1 ]; then
 else
   install_or_update
   should_add_server_configs
-  should_disable_bots
   sync_custom_files
   start
 fi
