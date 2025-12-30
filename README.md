@@ -1,22 +1,11 @@
 # docker-csgo
 
-<p>
-  <a href="https://github.com/timche/docker-csgo-updater">
-    <img alt="GitHub CI" src="https://github.com/timche/docker-csgo-updater/workflows/ci/badge.svg" />
-  </a>
-  <a href="https://hub.docker.com/r/timche/csgo">
-    <img alt="Docker Image Version" src="https://img.shields.io/docker/v/timche/csgo/latest">
-  </a>
-  <a href="https://hub.docker.com/r/timche/csgo">
-    <img alt="Docker Image Size" src="https://img.shields.io/docker/image-size/timche/csgo/latest">
-  </a>
-  <a href="https://hub.docker.com/r/timche/csgo">
-    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/timche/csgo" />
-  </a>
-  <a href="https://hub.docker.com/r/timche/csgo">
-    <img alt="Docker Stars" src="https://img.shields.io/docker/stars/timche/csgo" />
-  </a>
-</p>
+Changes based on the timche/csgo project
+
+>Changes based on the [timche/csgo](https://github.com/timche/docker-csgo) project
+>
+>基于timche/csgo项目的更改
+
 
 > [Counter-Strike: Global Offensive (CS:GO) Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers) with automated/manual updating and optional [SourceMod](https://www.sourcemod.net/) and [PugSetup](https://github.com/splewis/csgo-pug-setup)/[PracticeMode](https://github.com/splewis/csgo-practice-mode) integrations
 
