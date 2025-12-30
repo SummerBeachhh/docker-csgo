@@ -1,7 +1,5 @@
 # docker-csgo
 
-Changes based on the timche/csgo project
-
 >Changes based on the [timche/csgo](https://github.com/timche/docker-csgo) project
 >
 >基于timche/csgo项目的更改
@@ -10,7 +8,7 @@ Changes based on the timche/csgo project
 > [Counter-Strike: Global Offensive (CS:GO) Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers) with automated/manual updating and optional [SourceMod](https://www.sourcemod.net/) and [PugSetup](https://github.com/splewis/csgo-pug-setup)/[PracticeMode](https://github.com/splewis/csgo-practice-mode) integrations
 
 > [!WARNING]
-> This Docker image isn't maintained. It's testing... 
+> This Docker image is beginning make. It's testing... 
 
 ## Table of Contents
 
