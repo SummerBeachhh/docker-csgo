@@ -1,4 +1,4 @@
-FROM timche/csgo:sourcemod
+FROM summerbeachhh/csgo:sourcemod
 
 USER csgo
 
