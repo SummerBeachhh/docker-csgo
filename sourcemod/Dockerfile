@@ -1,4 +1,4 @@
-FROM summerbeachhh/csgo
+FROM timche/csgo:latest
 
 USER csgo
 

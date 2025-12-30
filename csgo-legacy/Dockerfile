@@ -1,4 +1,4 @@
-FROM summerbeachhh/csgo:sourcemod
+FROM summerbeachhh/csgo-legacy:sourcemod
 
 USER csgo
 
