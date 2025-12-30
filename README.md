@@ -21,9 +21,7 @@
 > [Counter-Strike: Global Offensive (CS:GO) Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers) with automated/manual updating and optional [SourceMod](https://www.sourcemod.net/) and [PugSetup](https://github.com/splewis/csgo-pug-setup)/[PracticeMode](https://github.com/splewis/csgo-practice-mode) integrations
 
 > [!WARNING]
-> This Docker image isn't maintained anymore since the release of Counter-Strike 2.
-
-ℹ️ _Run your CS:GO server on [Hetzner Cloud](https://hetzner.cloud/?ref=v4lzGIPSIrNk) for as low as €6.37/months with 2 vCPUs, 4 GB RAM, 40 GB storage and great performance (low sv/var)! Use [my referral link](https://hetzner.cloud/?ref=v4lzGIPSIrNk) to receive **€20 cloud credits for free** as soon as you sign up!_
+> This Docker image isn't maintained. It's testing... 
 
 ## Table of Contents
 
@@ -63,15 +61,15 @@ Each variant refers to a tag, e.g. `timche/csgo:<tag>`.
 
 ##### [`latest`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile) / [`<version>`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile)
 
-Vanilla CS:GO server.
+Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) and [SourceMod](https://www.sourcemod.net/).+Nolobbyreservation plugin.
 
 ##### [`sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile) / [`<version>-sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile)
 
 Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) and [SourceMod](https://www.sourcemod.net/).
 
-##### [`pug-practice`](https://github.com/timche/docker-csgo/blob/master/pug-practice/Dockerfile) / [`<version>-pug-practice`](https://github.com/timche/docker-csgo/blob/master/pug-practice/Dockerfile)
+##### ~~[`pug-practice`](https://github.com/timche/docker-csgo/blob/master/pug-practice/Dockerfile) / [`<version>-pug-practice`](https://github.com/timche/docker-csgo/blob/master/pug-practice/Dockerfile)~~
 
-Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net), [SourceMod](https://www.sourcemod.net/), [PugSetup](https://github.com/splewis/csgo-pug-setup) and [PracticeMode](https://github.com/splewis/csgo-practice-mode) (by [splewis](https://github.com/splewis)).
+~~Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net), [SourceMod](https://www.sourcemod.net/), [PugSetup](https://github.com/splewis/csgo-pug-setup) and [PracticeMode](https://github.com/splewis/csgo-practice-mode) (by [splewis](https://github.com/splewis)).~~
 
 ## Environment Variables
 
