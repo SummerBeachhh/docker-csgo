@@ -1,127 +1,153 @@
 #!/bin/bash
+
 set -e
+
 if [ "${DEBUG}" = "true" ]; then
   set -x
 fi
+
 shopt -s extglob
 
-steam_dir="${HOME}/Steam"
-server_dir="${HOME}/server"
-server_installed_lock_file="${server_dir}/installed.lock"
-csgo_dir="${server_dir}/csgo"
-csgo_custom_files_dir="${CSGO_CUSTOM_FILES_DIR-"/usr/csgo"}"
+args=("$@")
 
-install() {
-  echo '> Installing server ...'
-  set -x
-  $steam_dir/steamcmd.sh \
-    +force_install_dir $server_dir \
-    +login anonymous \
-    +app_update 740 validate \
-    +quit
-  set +x
+server=$HOME/server.sh
+csgo_dir=$HOME/server/csgo
+sourcemod_plugins_dir=$csgo_dir/addons/sourcemod/plugins
+
+mmsource_exact_version="${METAMOD_VERSION-"1.11.0"}"
+mmsource_version=$(echo ${mmsource_exact_version} | cut -f1-2 -d '.')
+mmsource_url="https://mms.alliedmods.net/mmsdrop/${mmsource_version}/mmsource-${mmsource_exact_version}-git${METAMOD_BUILD-1156}-linux.tar.gz"
+
+sourcemod_exact_version="${SOURCEMOD_VERSION-"1.12.0"}"
+sourcemod_version=$(echo ${sourcemod_exact_version} | cut -f1-2 -d '.')
+sourcemod_url="https://sm.alliedmods.net/smdrop/${sourcemod_version}/sourcemod-${sourcemod_exact_version}-git${SOURCEMOD_BUILD-7172}-linux.tar.gz"
+
+install_or_update_mod() {
+  cd $csgo_dir
+
+  if [ ! -f "$1" ]; then
+    touch $1
+  fi
+
+  installed=$(< $1)
+
+  if [ "${installed}" = "$2" ] && [ "${VALIDATE_SERVER_FILES-"false"}" = "false" ]; then
+    return
+  fi
+
+  if [ -z "${installed}" ]; then
+    echo "> Installing mod ${1} from ${2} ..."
+  else
+    echo "> Updating mod ${1} from ${2} ..."
+  fi
+
+  wget -qO- $2 | tar zxf -
+
+  echo $2 > $1
+
   echo '> Done'
-  touch $server_installed_lock_file
 }
 
-sync_custom_files() {
-  echo "> Checking for custom files at \"$csgo_custom_files_dir\" ..."
-  if [ -d "$csgo_custom_files_dir" ]; then
-    echo "> Found custom files. Syncing with \"${csgo_dir}\" ..."
-    set -x
-    cp -asf $csgo_custom_files_dir/* $csgo_dir # Copy custom files as soft links
-    find $csgo_dir -xtype l -delete # Find and delete broken soft links
-    set +x
-    echo '> Done'
-  else
-    echo '> No custom files found'
-  fi
+install_or_update_mods() {
+  install_or_update_mod 'mmsource' $mmsource_url
+  install_or_update_mod 'sourcemod' $sourcemod_url
 }
 
-start() {
-  echo '> Starting server ...'
-  additionalParams=""
+install_or_update_plugin() {
+  cd $csgo_dir
 
-  # 检查 GSLT 是否设置
-  if [ -z "$CSGO_GSLT" ]; then
-    echo
-    echo "*******************************************************"
-    echo "***                                                 ***"
-    echo "***       WARNING: CSGO_GSLT NO SET 未设置！        ***"
-    echo "***                                                 ***"
-    echo "***   公网服务器必须设置有效的 GSLT 令牌             ***"
-    echo "***   否则服务器将无法在互联网上被发现和加入          ***"
-    echo "***                                                 ***"
-    echo "***   请使用 -e CSGO_GSLT=\"your_token_here\" 启动容器 ***"
-    echo "***                                                 ***"
-    echo "*******************************************************"
-    echo
+  if [ ! -f "${args[1]}" ]; then
+    touch ${args[1]}
+  fi
+
+  installed=$(< ${args[1]})
+
+  if [ "${installed}" = "${args[2]}" ] && [ "${VALIDATE_SERVER_FILES-"false"}" = "false" ]; then
+    return
+  fi
+
+  if [ -z "${installed}" ]; then
+    echo "> Installing SourceMod plugin ${args[1]} from ${args[2]} ..."
   else
-    additionalParams+=" +sv_setsteamaccount $CSGO_GSLT"
+    echo "> Updating SourceMod plugin ${args[1]} from ${args[2]} ..."
   fi
 
-  if [ -n "$CSGO_PW" ]; then
-    additionalParams+=" +sv_password $CSGO_PW"
-  fi
-  if [ -n "$CSGO_HOSTNAME" ]; then
-    additionalParams+=" +hostname $CSGO_HOSTNAME"
-  fi
-  if [ -n "$CSGO_WS_API_KEY" ]; then
-    additionalParams+=" -authkey $CSGO_WS_API_KEY"
-  fi
-  if [ "${CSGO_FORCE_NETSETTINGS-"false"}" = "true" ]; then
-    additionalParams+=" +sv_minrate 786432 +sv_mincmdrate 128 +sv_minupdaterate 128"
-  fi
-  if [ "${CSGO_TV_ENABLE-"false"}" = "true" ]; then
-    additionalParams+=" +tv_enable 1"
-    additionalParams+=" +tv_delaymapchange ${CSGO_TV_DELAYMAPCHANGE-1}"
-    additionalParams+=" +tv_delay ${CSGO_TV_DELAY-45}"
-    additionalParams+=" +tv_deltacache ${CSGO_TV_DELTACACHE-2}"
-    additionalParams+=" +tv_dispatchmode ${CSGO_TV_DISPATCHMODE-1}"
-    additionalParams+=" +tv_maxclients ${CSGO_TV_MAXCLIENTS-10}"
-    additionalParams+=" +tv_maxrate ${CSGO_TV_MAXRATE-0}"
-    additionalParams+=" +tv_overridemaster ${CSGO_TV_OVERRIDEMASTER-0}"
-    additionalParams+=" +tv_snapshotrate ${CSGO_TV_SNAPSHOTRATE-128}"
-    additionalParams+=" +tv_timeout ${CSGO_TV_TIMEOUT-60}"
-    additionalParams+=" +tv_transmitall ${CSGO_TV_TRANSMITALL-1}"
-    if [ -n "${CSGO_TV_NAME}" ]; then
-      additionalParams+=" +tv_name ${CSGO_TV_NAME}"
-    fi
-    if [ -n "${CSGO_TV_PORT}" ]; then
-      additionalParams+=" +tv_port ${CSGO_TV_PORT}"
-    fi
-    if [ -n "${CSGO_TV_PASSWORD}" ]; then
-      additionalParams+=" +tv_password ${CSGO_TV_PASSWORD}"
-    fi
+  wget -q -O plugin.zip ${args[2]}
+
+  unzip -qo plugin.zip
+
+  rm plugin.zip
+
+  echo ${args[2]} > ${args[1]}
+
+  echo '> Done'
+}
+
+manage_plugins() {
+  echo '> Managing SourceMod plugins ...'
+
+  cd $sourcemod_plugins_dir
+
+  if [ "${SOURCEMOD_PLUGINS_DISABLED}" = "*" ]; then
+    for plugin in *.smx; do
+      if [ -f "${plugin}" ]; then
+        echo "> Disabling ${plugin}"
+        mv $plugin disabled
+      fi
+    done
+  elif [ -n "${SOURCEMOD_PLUGINS_DISABLED}" ]; then
+    for plugin in $(echo $SOURCEMOD_PLUGINS_DISABLED | sed "s/,/ /g"); do
+      if [ -f "${plugin}.smx" ]; then
+        echo "> Disabling ${plugin}.smx"
+        mv "${plugin}.smx" disabled
+      fi
+    done
   fi
 
-  set -x
-  exec $server_dir/srcds_run \
-    -game csgo \
-    -console \
-    -norestart \
-    -usercon \
-    -nobreakpad \
-    +ip "${CSGO_IP-0.0.0.0}" \
-    -port "${CSGO_PORT-27015}" \
-    -tickrate "${CSGO_TICKRATE-128}" \
-    -maxplayers_override "${CSGO_MAX_PLAYERS-16}" \
-    +game_type "${CSGO_GAME_TYPE-0}" \
-    +game_mode "${CSGO_GAME_MODE-1}" \
-    +mapgroup "${CSGO_MAP_GROUP-mg_active}" \
-    +map "${CSGO_MAP-de_dust2}" \
-    +rcon_password "${CSGO_RCON_PW-changeme}" \
-    $additionalParams \
-    $CSGO_PARAMS
+  cd disabled
+
+  if [ "${SOURCEMOD_PLUGINS_ENABLED}" = "*" ]; then
+    for plugin in *.smx; do
+      if [ -f "${plugin}" ]; then
+        echo "> Enabling ${plugin}"
+        mv $plugin ..
+      fi
+    done
+  elif [ -n "${SOURCEMOD_PLUGINS_ENABLED}" ]; then
+    for plugin in $(echo $SOURCEMOD_PLUGINS_ENABLED | sed "s/,/ /g"); do
+      if [ -f "${plugin}.smx" ]; then
+        echo "> Enabling ${plugin}.smx"
+        mv "${plugin}.smx" ..
+      fi
+    done
+  fi
+
+  echo '> Done'
+}
+
+manage_admins() {
+  if [ -n "${SOURCEMOD_ADMINS}" ]; then
+    admins_simple="${csgo_dir}/addons/sourcemod/configs/admins_simple.ini"
+
+    if [ -f "${admins_simple}" ]; then
+      > $admins_simple
+
+      for steamid in $(echo $SOURCEMOD_ADMINS | sed "s/,/ /g"); do
+        echo "\"$steamid\" \"z\"" >> $admins_simple
+      done
+    fi
+  fi
 }
 
 if [ ! -z $1 ]; then
   $1
 else
-  # 首次运行安装服务器文件，后续直接启动
-  if [ ! -f "$server_installed_lock_file" ]; then
-    install
-  fi
-  sync_custom_files
-  start
+  $server install_or_update
+  install_or_update_mods
+  manage_plugins
+  manage_admins
+  $server should_add_server_configs
+  $server should_disable_bots
+  $server sync_custom_files
+  exec $server start
 fi
