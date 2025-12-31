@@ -44,7 +44,7 @@ To configure the server with more advanced settings, set [environment variables]
 
 ## Image Variants
 
-Each variant refers to a tag, e.g. `timche/csgo:<tag>`.
+Each variant refers to a tag, e.g. `summerbeachhh/csgo-legacy:<tag>`.
 
 ##### [`latest`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile) / [`<version>`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile)
 
@@ -53,6 +53,9 @@ Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) a
 ##### [`sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile) / [`<version>-sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile)
 
 Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) and [SourceMod](https://www.sourcemod.net/).
+##### [`base`]() / [`<version>-base`]()
+
+Vanilla CS:GO server
 
 ##### ~~[`pug-practice`](https://github.com/timche/docker-csgo/blob/master/pug-practice/Dockerfile) / [`<version>-pug-practice`](https://github.com/timche/docker-csgo/blob/master/pug-practice/Dockerfile)~~
 
