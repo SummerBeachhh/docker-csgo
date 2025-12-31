@@ -5,7 +5,7 @@
 >基于timche/csgo项目的更改
 
 
-> [Counter-Strike: Global Offensive (CS:GO) Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers) with automated/manual updating and optional [SourceMod](https://www.sourcemod.net/) and [PugSetup](https://github.com/splewis/csgo-pug-setup)/[PracticeMode](https://github.com/splewis/csgo-practice-mode) integrations
+> ~~[Counter-Strike: Global Offensive (CS:GO) Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers) with automated/manual updating and optional [SourceMod](https://www.sourcemod.net/) and [PugSetup](https://github.com/splewis/csgo-pug-setup)/[PracticeMode](https://github.com/splewis/csgo-practice-mode) integrations~~
 
 > [!WARNING]
 > This Docker image is beginning make. It's testing... 
@@ -31,7 +31,7 @@
 $ docker run \
   -v=csgo:/home/csgo/server \
   --net=host \
-  timche/csgo
+  summerbeachhh/csgo-legacy
 ```
 
 This is a bare minimum example and the server will be:
@@ -48,7 +48,7 @@ Each variant refers to a tag, e.g. `timche/csgo:<tag>`.
 
 ##### [`latest`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile) / [`<version>`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile)
 
-Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) and [SourceMod](https://www.sourcemod.net/).+Nolobbyreservation plugin.
+Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) and [SourceMod](https://www.sourcemod.net/).+**Nolobbyreservation plugin**.
 
 ##### [`sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile) / [`<version>-sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile)
 
