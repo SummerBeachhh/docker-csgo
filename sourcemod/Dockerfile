@@ -1,4 +1,4 @@
-FROM timche/csgo:latest
+FROM summerbeachhh/csgo-legacy:base
 
 USER csgo
 
