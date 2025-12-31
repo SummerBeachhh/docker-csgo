@@ -1,7 +1,7 @@
 # docker-csgo
 
 >Changes based on the [timche/csgo](https://github.com/timche/docker-csgo) project
->
+>Fix issues caused by the CS2 update. Created as an amateur project by a non-professional student, it may have some bugs.
 >基于timche/csgo项目的更改
 
 
