@@ -1,14 +1,15 @@
 # docker-csgo
-Fix issues caused by the CS2 update. Created From Amateur Non-Professional Student, it may have some bugs.
+> [!IMPORTANT]
+>
+> #### Fix issues caused by the CS2 update. Created From Amateur Non-Professional Student, it may have some bugs.
+>
+> #### 目的是修复因为CS2更新造成以前的Docker镜像无法正常开服，非专业调整，可能还有一些问题。建议自行检查脚本
+>
+> This Docker image is beginning make. testing... 
+
 >Changes based on the [timche/csgo](https://github.com/timche/docker-csgo) project
 >
 >基于timche/csgo项目的更改
-
-
-> ~~[Counter-Strike: Global Offensive (CS:GO) Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers) with automated/manual updating and optional [SourceMod](https://www.sourcemod.net/) and [PugSetup](https://github.com/splewis/csgo-pug-setup)/[PracticeMode](https://github.com/splewis/csgo-practice-mode) integrations~~
-
-> [!WARNING]
-> This Docker image is beginning make. It's testing... 
 
 ## Table of Contents
 
@@ -27,6 +28,10 @@ Fix issues caused by the CS2 update. Created From Amateur Non-Professional Stude
 
 ## How to Use This Image
 
+> [!NOTE]
+>
+> Start Minimized
+
 ```sh
 $ docker run \
   -v=csgo:/home/csgo/server \
@@ -42,13 +47,42 @@ This is a bare minimum example and the server will be:
 
 To configure the server with more advanced settings, set [environment variables](#environment-variables).
 
+------
+
+> [!NOTE]
+>
+> Example Compose YAML
+
+```yaml
+services:
+  csgo:
+    container_name: csgo-legacy
+    image: summerbeachhh/csgo-legacy
+    network_mode: host
+    restart: unless-stopped
+
+    environment:
+      - CSGO_PARAMS=-sv_lan 0 -insecure 
+      - CSGO_GSLT=6E3AXXXXXXXXXXXXXXXXXXXXXX
+      - CSGO_PORT=27015
+      - CSGO_MAX_PLAYERS=12
+      - CSGO_RCON_PW=MUST_CH4NGE_Th1s
+      - CSGO_TICKRATE=128
+      - CSGO_MAP_GROUP=mg_active
+      - CSGO_MAP=de_dust2
+    volumes:
+      - **MUST_CHANGE_This**:/home/csgo/server
+```
+
+
+
 ## Image Variants
 
 Each variant refers to a tag, e.g. `summerbeachhh/csgo-legacy:<tag>`.
 
 ##### [`latest`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile) / [`<version>`](https://github.com/timche/docker-csgo/blob/master/base/Dockerfile)
 
-Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) and [SourceMod](https://www.sourcemod.net/).+**Nolobbyreservation plugin**.
+Vanilla CS:GO server with untouched [Metamod:Source](https://www.sourcemm.net) and [SourceMod](https://www.sourcemod.net/).+**Nolobbyreservation plugin(v0.0.2 by vanz)**.
 
 ##### [`sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile) / [`<version>-sourcemod`](https://github.com/timche/docker-csgo/blob/master/sourcemod/Dockerfile)
 
@@ -343,71 +377,71 @@ List of comma-separated SourceMod plugins (e.g. `mapchooser,randomcycle,rockthev
 
 List of comma-separated Steam IDs that are SourceMod admins (e.g. `STEAM_0:0:123,STEAM_0:1:234`) with [`z` flag](<https://wiki.alliedmods.net/Adding_Admins_(SourceMod)>).
 
-### PugSetup/PracticeMode
+### ~~PugSetup/PracticeMode~~
 
-##### `PUGSETUP_VERSION`
+##### ~~`PUGSETUP_VERSION`~~
 
-> _`pug-practice` image only._
+> ~~_`pug-practice` image only._~~
 
-Default: `2.0.7`
+~~Default: `2.0.7`~~
 
-[PugSetup version](https://github.com/splewis/csgo-pug-setup/releases) running on the server. Changing this will update/downgrade it on container start.
+~~[PugSetup version](https://github.com/splewis/csgo-pug-setup/releases) running on the server. Changing this will update/downgrade it on container start.~~
 
-##### `PRACTICEMODE_VERSION`
+##### ~~`PRACTICEMODE_VERSION`~~
 
-> _`pug-practice` image only._
+> ~~_`pug-practice` image only._~~
 
-Default: `1.3.4`
+~~Default: `1.3.4`~~
 
-[PracticeMode version](https://github.com/splewis/csgo-practice-mode/releases) running on the server. Changing this will update/downgrade it on container start.
+~~[PracticeMode version](https://github.com/splewis/csgo-practice-mode/releases) running on the server. Changing this will update/downgrade it on container start.~~
 
-##### `PUG_PRACTICE_MINIMAL_PLUGINS`
+##### ~~`PUG_PRACTICE_MINIMAL_PLUGINS`~~
 
-> _`pug-practice` image only._
+> ~~_`pug-practice` image only._~~
 
-Default: `false`
+~~Default: `false`~~
 
-Disables all SourceMod plugins and enables only minimal required plugins for optimal server performance:
+~~Disables all SourceMod plugins and enables only minimal required plugins for optimal server performance:~~
 
-- `admin-flatfile`
-- `botmimic`
-- `csutils`
-- `practicemode`
-- `pugsetup`
+- ~~`admin-flatfile`~~
+- ~~`botmimic`~~
+- ~~`csutils`~~
+- ~~`practicemode`~~
+- ~~`pugsetup`~~
 
-Can be enabled with `true`. Additional plugins can be enabled with [`SOURCEMOD_PLUGINS_ENABLED`](#sourcemod_plugins_enabled).
+~~Can be enabled with `true`. Additional plugins can be enabled with [`SOURCEMOD_PLUGINS_ENABLED`](#sourcemod_plugins_enabled).~~
 
-##### `PUGSETUP_PERMISSIONS`
+##### ~~`PUGSETUP_PERMISSIONS`~~
 
-> _`pug-practice` image only._
+> ~~_`pug-practice` image only._~~
 
-Default: None
+~~Default: None~~
 
-List of comma-separated PugSetup permissions (e.g. `sm_10man=none,sm_setup=admin`) that are set in `addons/sourcemod/configs/pugsetup/permissions.cfg`. Changes are applied on container start.
+~~List of comma-separated PugSetup permissions (e.g. `sm_10man=none,sm_setup=admin`) that are set in `addons/sourcemod/configs/pugsetup/permissions.cfg`. Changes are applied on container start.~~
 
-##### `PUGSETUP_SETUPOPTIONS`
+##### ~~`PUGSETUP_SETUPOPTIONS`~~
 
-> _`pug-practice` image only._
+> ~~_`pug-practice` image only._~~
 
-Default: None
+~~Default: None~~
 
-List of comma-separated PugSetup configurations (e.g. `maptype=current,record=0:0`) that are set in `addons/sourcemod/configs/pugsetup/setupoptions.cfg` where the first value is the `default` value followed by an optional second value which is the `display_setting` value and a `:` delimiter in between them. Changes are applied on container start.
+~~List of comma-separated PugSetup configurations (e.g. `maptype=current,record=0:0`) that are set in `addons/sourcemod/configs/pugsetup/setupoptions.cfg` where the first value is the `default` value followed by an optional second value which is the `display_setting` value and a `:` delimiter in between them. Changes are applied on container start.~~
 
-##### `PUGSETUP_CVARS`
+##### ~~`PUGSETUP_CVARS`~~
 
-> _`pug-practice` image only._
+> ~~_`pug-practice` image only._~~
 
-Default: None
+~~Default: None~~
 
-List of comma-separated PugSetup configurations (e.g. `sm_pugsetup_autosetup=1,sm_pugsetup_quick_restarts=1`) that are set in `cfg/sourcemod/pugsetup.cfg`. Changes are applied on container start, but not on initial container start as `pugsetup.cfg` must be auto-generated first by the server.
+~~List of comma-separated PugSetup configurations (e.g. `sm_pugsetup_autosetup=1,sm_pugsetup_quick_restarts=1`) that are set in `cfg/sourcemod/pugsetup.cfg`. Changes are applied on container start, but not on initial container start as `pugsetup.cfg` must be auto-generated first by the server.~~
 
-##### `PUGSETUP_DAMAGEPRINT_CVARS`
+##### ~~`PUGSETUP_DAMAGEPRINT_CVARS`~~
 
-> _`pug-practice` image only._
+> ~~_`pug-practice` image only._~~
 
-Default: None
+~~Default: None~~
 
-List of comma-separated PugSetup configurations (e.g. `sm_pugsetup_damageprint_auto_color=1,sm_pugsetup_damageprint_format={NAME} [{HEALTH}]: {DMG_TO}/{HITS_TO}`) that are set in `cfg/sourcemod/pugsetup_damageprint.cfg`. Changes are applied on container start, but requires `pugsetup_damageprinter` plugin to be run first.
+~~List of comma-separated PugSetup configurations (e.g. `sm_pugsetup_damageprint_auto_color=1,sm_pugsetup_damageprint_format={NAME} [{HEALTH}]: {DMG_TO}/{HITS_TO}`) that are set in `cfg/sourcemod/pugsetup_damageprint.cfg`. Changes are applied on container start, but requires `pugsetup_damageprinter` plugin to be run first.~~
 
 ### Other
 
