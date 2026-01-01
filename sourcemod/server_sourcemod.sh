@@ -147,6 +147,7 @@ else
   manage_plugins
   manage_admins
   $server should_add_server_configs
+  $server should_disable_bots
   $server sync_custom_files
   exec $server start
 fi
